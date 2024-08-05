@@ -10,6 +10,14 @@ def CadastrarfindAll():
     retorno = services.findAll()
     return retorno
 
+@app.route("/findByTiqueteBalanca", methods=['GET'])
+def findByTiqueteBalanca():
+    TiqueteBalanca = request.args.get('TiqueteBalanca')
+    print("="*50, TiqueteBalanca)
+    retorno = services.findByTiqueteBalanca(TiqueteBalanca)
+    return retorno
+
+
 
 @app.route("/CadastrarNotaGsm", methods=['POST'])
 def CadastrarNotaGsm():

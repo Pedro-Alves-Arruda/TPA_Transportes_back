@@ -1,6 +1,5 @@
 class NotaGsm:
-    def __init__(self, id_nota, tiquete_balanca, comissao_motorista, peso, valor_frete):
-        self.id_nota = id_nota
+    def __init__(self,tiquete_balanca, comissao_motorista, peso, valor_frete):
         self.tiquete_balanca = tiquete_balanca
         self.comissao_motorista = comissao_motorista
         self.peso = peso
@@ -8,7 +7,6 @@ class NotaGsm:
 
     def to_dict(self):
         return {
-             'id_nota': self.id_nota,
             'tiquete_balanca': self.tiquete_balanca,
             'comissao_motorista': self.comissao_motorista,
             'peso': self.peso,

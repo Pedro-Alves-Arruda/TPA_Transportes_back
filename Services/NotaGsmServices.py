@@ -4,6 +4,10 @@ def findAll():
     retorno = respository.findAll()
     return retorno
 
+def findByTiqueteBalanca(TiqueteBalanca):
+    retorno = respository.findByTiqueteBalanca(TiqueteBalanca)
+    return retorno
+
 def CadastrarNotaGsm(nota):
     retorno = respository.CadastrarNotaGsm(nota)
     return retorno
