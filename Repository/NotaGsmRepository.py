@@ -5,10 +5,10 @@ from mysql.connector import Error
 
 # Configurações de conexão
 config = {
-    'user': 'root',
+    'user': '',
     'password': '',
-    'host': '127.0.0.1',
-    'database': 'tpa_transportes',
+    'host': '',
+    'database': '',
     'raise_on_warnings': True
 }
 
