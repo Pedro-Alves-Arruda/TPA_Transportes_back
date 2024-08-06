@@ -22,39 +22,57 @@ def criarConexao():
 
 def findAll():
    
-    conn = mysql.connector.connect(**config)
+    try:
+        conn = mysql.connector.connect(**config)
 
-    # Criar um cursor para executar as consultas
-    cursor = conn.cursor(dictionary=True)
+        # Criar um cursor para executar as consultas
+        cursor = conn.cursor(dictionary=True)
 
-    # Escrever a consulta SQL
-    query = "select * from gsm_nota;"
+        # Escrever a consulta SQL
+        query = "select * from gsm_nota;"
 
-    # Executar a consulta
-    cursor.execute(query)
+        # Executar a consulta
+        cursor.execute(query)
 
-    resultados = cursor.fetchall()
+        resultados = cursor.fetchall()
 
-    return resultados
+        return resultados
+    
+    except Error as e:
+
+        print(f"Erro: {e}")
+        conn.rollback()
+
 
 
 def findByTiqueteBalanca(tiqueteBalanca:int):
-    conn = mysql.connector.connect(**config)
 
-    # Criar um cursor para executar as consultas
-    cursor = conn.cursor(dictionary=True)
+    try:
+        conn = mysql.connector.connect(**config)
 
-    # Escrever a consulta SQL
-    query = "select tiquete_balanca, comissao_motorista, peso, valor_frete from gsm_nota where tiquete_balanca = '"+tiqueteBalanca+"';"    
-    
-    # Executar a consulta
-    cursor.execute(query)
+        # Criar um cursor para executar as consultas
+        cursor = conn.cursor(dictionary=True)
 
-    resultado = cursor.fetchall()
+        # Escrever a consulta SQL
+        query = "select tiquete_balanca, comissao_motorista, peso, valor_frete from gsm_nota where tiquete_balanca = '"+tiqueteBalanca+"';"    
+        
+        # Executar a consulta
+        cursor.execute(query)
 
-    print(resultado)
+        resultado = cursor.fetchone()
 
-    return resultado
+    except Error as e:
+
+        print(f"Erro: {e}")
+        conn.rollback()
+
+    finally:
+
+        if conn.is_connected():
+            cursor.close()
+            conn.close()
+
+        return resultado
 
 
 
@@ -71,19 +89,19 @@ def CadastrarNotaGsm(nota:NotaGsm.NotaGsm):
         values = (nota.tiquete_balanca, nota.comissao_motorista, nota.peso, nota.valor_frete)
 
         # Executar a consulta
-        cursor.execute(query, values)
+        cursor.execute(query,values)
+
+        #Termina a operação no banco de dados
         conn.commit()
 
-        notaSalva = findByTiqueteBalanca(nota.tiquete_balanca)
-
-        if notaSalva is not None:
-            nota = "200"
+        return "200"
 
 
     except Error as e:
 
         print(f"Erro ao conectar ou inserir dados no MySQL: {e}")
         nota = "500"
+        conn.rollback()
 
     finally:
 
@@ -92,5 +110,4 @@ def CadastrarNotaGsm(nota:NotaGsm.NotaGsm):
             conn.close()
             print("Conexão ao MySQL encerrada")
 
-
-    return nota
+   
